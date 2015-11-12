@@ -1,3 +1,5 @@
+G = 6.67408E-11 #m^3/(kg*s^2)
+
 def rungekutta(f, g, x0, y0, dt):
     ax = f(x0, y0)
     ay = g(x0, y0)
@@ -13,4 +15,16 @@ def rungekutta(f, g, x0, y0, dt):
 
     return (x1, y1)
 
+def a(M, R, i):
+    a = 0
+    for j in range(0, len(M)):
+        if (j==i):
+            continue
+        a = a - G*M[j]*(np.subtract(R[i], R[j]))/np.sqrt(x.dot(x))
+    return a
+
+def rdot(x, y):
+    return y
+
+def vdot(x, y):
 

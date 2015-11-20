@@ -7,14 +7,14 @@ import time
 G = 1 # TODO
 dt = 1.0
 
-# yksiköt:
+# TODO: yksiköt:
 # AU
 # d
 
 def rungekutta(f, g, R0, V0, M):
     koko = R0.shape
-    R1 = R0
-    V1 = R0
+    R1 = np.copy(R0)
+    V1 = np.copy(V0)
     for i in range(koko[0]):
         for j in range(koko[0]):
             if (i != j):              
@@ -33,6 +33,7 @@ def rungekutta(f, g, R0, V0, M):
 
                 R1[i] += dt*(k1x + 2*k2x + 2*k3x + k4x)/6
                 V1[i] += dt*(k1y + 2*k2y + 2*k3y + k4y)/6
+                
     return (R1, V1)
     
 def dv(r, v, m):
@@ -41,16 +42,17 @@ def dv(r, v, m):
 def dr(r, v, m):
     return v
 
-
 X0 = np.array([[-1.0, 0.0], [1.0, 0.0]])
 V0 = np.array([[0.0, 0.0], [0.0, 0.0]])
-tup = (X0, V0)
+tup = (np.copy(X0), np.copy(V0))
 t = 0
-t_max = 1
+t_max = 5
 
-print(tup)
+out = []
 
 while (t<t_max):
     tup = rungekutta(dr, dv, tup[0], tup[1], [1.0, 1.0])
-    print(tup)
+    out.append(np.copy(tup[0]))
     t += dt
+
+print np.array(out)

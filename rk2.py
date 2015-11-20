@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import time
 
 G = 1 # TODO
-dt = 1
+dt = 1.0
 
+# yksiköt:
 # AU
 # d
 
@@ -33,48 +34,23 @@ def rungekutta(f, g, R0, V0, M):
                 R1[i] += dt*(k1x + 2*k2x + 2*k3x + k4x)/6
                 V1[i] += dt*(k1y + 2*k2y + 2*k3y + k4y)/6
     return (R1, V1)
-
+    
 def dv(r, v, m):
     return -G*m*(r)/(len(r)**3)
     
 def dr(r, v, m):
     return v
 
+
 X0 = np.array([[-1.0, 0.0], [1.0, 0.0]])
 V0 = np.array([[0.0, 0.0], [0.0, 0.0]])
-print(X0[0])
-print(X0[1])
-print(X0[1]-X0[0])
-print(dv(X0[1]-X0[0], V0[1], 1))
+tup = (X0, V0)
+t = 0
+t_max = 1
 
-M = [20.0, 1.0]
-t = 0 
-t_max = 5
-out = []
-i = 0
+print(tup)
 
-#tup = (np.copy(X0), np.copy(V0))
-
-print(rungekutta(dr, dv, X0, V0, [100.0, 1.0]))
-
-#while(t<t_max):
-#    tmp = rungekutta(dr, dv, vektorit[0], vektorit[1], M)
-#    
-#    out.append(tmp[0])
-#    vektorit = tmp
-#    plt.plot(vektorit[0][0][0], vektorit[0][0][1], 'ro')
-#    plt.plot(vektorit[0][1][0], vektorit[0][0][1], 'bo')
-#    #plt.axis((0, 40, 0, 40))
-#    plt.show()
-#    t = t + dt
-#
-##print(out)
-#plt.show()
-#print(X0[0])
-#print(X0[1])
-#print(X0[1]-X0[0])
-#print(dv(X0[1]-X0[0], V0[1], 1))
-
-#print(out)
-#print(vektorit[0][0])
-#print(tup[0])
+while (t<t_max):
+    tup = rungekutta(dr, dv, tup[0], tup[1], [1.0, 1.0])
+    print(tup)
+    t += dt

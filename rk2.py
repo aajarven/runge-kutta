@@ -2,10 +2,10 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import time
+import math
 
-G = 1 # TODO
-dt = 1.0
+G = 4*math.pi**2 # AU^3/(M_sun*a^2)
+dt = 1./365
 
 # TODO: yksiköt:
 # AU
@@ -42,17 +42,21 @@ def dv(r, v, m):
 def dr(r, v, m):
     return v
 
-X0 = np.array([[-1.0, 0.0], [1.0, 0.0]])
-V0 = np.array([[0.0, 0.0], [0.0, 0.0]])
+X0 = np.array([[0., 0.], [1., 0.]])
+V0 = np.array([[0., 0.], [0., 6.28]])
+M = np.array([1., 3e-6])
 tup = (np.copy(X0), np.copy(V0))
 t = 0
-t_max = 5
+t_max = 1
 
 out = []
 
 while (t<t_max):
-    tup = rungekutta(dr, dv, tup[0], tup[1], [1.0, 1.0])
+    tup = rungekutta(dr, dv, tup[0], tup[1], M)
+    plt.plot(tup[0][0][0], tup[0][0][1], 'ro')
+    plt.plot(tup[0][1][0], tup[0][1][1], 'bo')
     out.append(np.copy(tup[0]))
     t += dt
 
 print np.array(out)
+plt.show()

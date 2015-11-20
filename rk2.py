@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-G = 1 # au^3/(M_earth day^2)  (astronomical units cubed per Earth mass day squared)
+G = 1 # TODO
 dt = 1
 
 # AU
@@ -40,10 +40,7 @@ def dv(r, v, m):
 def dr(r, v, m):
     return v
 
-def len(vec):
-    return (np.dot(vec, vec))**0.5
-
-X0 = np.array([[0.0, 0.0], [2.0, 1.0]])
+X0 = np.array([[-1.0, 0.0], [1.0, 0.0]])
 V0 = np.array([[0.0, 0.0], [0.0, 0.0]])
 print(X0[0])
 print(X0[1])
@@ -52,31 +49,32 @@ print(dv(X0[1]-X0[0], V0[1], 1))
 
 M = [20.0, 1.0]
 t = 0 
-t_max = 10
+t_max = 5
 out = []
 i = 0
 
-tup = (np.copy(X0), np.copy(V0))
-#print(tup[0])
-plt.clf()
-plt.cla()
+#tup = (np.copy(X0), np.copy(V0))
 
+print(rungekutta(dr, dv, X0, V0, [100.0, 1.0]))
 
-while(t<t_max):
-    tup = rungekutta(dr, dv, tup[0], tup[1], M)
-    out.append(tup[0])
-    plt.plot(tup[0][0][0], tup[0][0][1], 'ro')
-    plt.plot(tup[0][1][0], tup[0][0][1], 'bo')
-    #plt.axis((0, 40, 0, 40))
-    plt.show()
-    t = t + dt
+#while(t<t_max):
+#    tmp = rungekutta(dr, dv, vektorit[0], vektorit[1], M)
+#    
+#    out.append(tmp[0])
+#    vektorit = tmp
+#    plt.plot(vektorit[0][0][0], vektorit[0][0][1], 'ro')
+#    plt.plot(vektorit[0][1][0], vektorit[0][0][1], 'bo')
+#    #plt.axis((0, 40, 0, 40))
+#    plt.show()
+#    t = t + dt
+#
+##print(out)
+#plt.show()
+#print(X0[0])
+#print(X0[1])
+#print(X0[1]-X0[0])
+#print(dv(X0[1]-X0[0], V0[1], 1))
 
 #print(out)
-plt.show()
-print(X0[0])
-print(X0[1])
-print(X0[1]-X0[0])
-print(dv(X0[1]-X0[0], V0[1], 1))
-
-print(out)
+#print(vektorit[0][0])
 #print(tup[0])

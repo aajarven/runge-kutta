@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import sys
 
 G = 4*math.pi**2 # AU^3/(M_sun*a^2)
 dt = 1./365
@@ -49,14 +50,31 @@ tup = (np.copy(X0), np.copy(V0))
 t = 0
 t_max = 1
 
-out = []
+#out = np.zeros(X0.shape+V0.shape)
+ohje = "TODO kunnollinen virheilmo" 
 
-while (t<t_max):
-    tup = rungekutta(dr, dv, tup[0], tup[1], M)
-    plt.plot(tup[0][0][0], tup[0][0][1], 'ro')
-    plt.plot(tup[0][1][0], tup[0][1][1], 'bo')
-    out.append(np.copy(tup[0]))
-    t += dt
-
-print np.array(out)
-plt.show()
+def main(argv):
+    
+    if (len(sys.argv) != 2):
+        print ohje
+    
+    tiedostonimi = str(sys.argv[1])
+    
+    
+    out = np.ndarray((math.ceil((t_max-t)/dt)+1, 2), dtype=object)
+    outRivi = 0
+    
+    while (t<t_max):
+        tup = rungekutta(dr, dv, tup[0], tup[1], M)
+        X = tup[0]
+        V = tup[1]
+        plt.plot(X[0][0], X[0][1], 'ro')
+        plt.plot(X[1][0], X[1][1], 'bo')    
+        t += dt
+        
+        out[outRivi][0] = X
+        out[outRivi][1] = V
+        outRivi = outRivi + 1
+        
+    plt.show()
+    return out

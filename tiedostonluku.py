@@ -30,8 +30,8 @@ def lueXVM(tiedostonimi):
             if(len(matriisit) < 3):
                 print 'virhe annetussa tiedostossa rivillä "'+rivi+'"'
             else:
-                X.append([(luku.strip()) for luku in matriisit[0].split(',')])
-                V.append([(luku.strip()) for luku in matriisit[1].split(',')])
-                M.append((matriisit[2].strip()))
+                X.append([float(luku.strip()) for luku in matriisit[0].split(',')])
+                V.append([float(luku.strip()) for luku in matriisit[1].split(',')])
+                M.append(float(matriisit[2].strip()))
         rivinro = rivinro + 1
     return [X, V, M]

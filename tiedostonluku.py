@@ -26,17 +26,12 @@ def lueXVM(tiedostonimi):
     rivinro = 0
     for rivi in rivit:
         if (len(rivi)>0 and rivi[0] != '#'):
-            matriisit = rivi.split(';')
+            matriisit = [m.strip() for m in rivi.split(';')]
             if(len(matriisit) < 3):
                 print 'virhe annetussa tiedostossa rivillä "'+rivi+'"'
             else:
-                X.append(rivi[0].split(',').strip())
-                V.append(rivi[1].split(',').strip())
-                M.append(float(rivi[2].strip()))
-                for i in range(len(X)):
-                    X[rivinro,i] = float(X[rivinro, i])
-                    V[rivinro,i] = float(V[rivinro, i])
+                X.append([(luku.strip()) for luku in matriisit[0].split(',')])
+                V.append([(luku.strip()) for luku in matriisit[1].split(',')])
+                M.append((matriisit[2].strip()))
         rivinro = rivinro + 1
     return [X, V, M]
-    
-    #matrix = [[int(i) for i in line.split()] for line in open('myfile.txt')]

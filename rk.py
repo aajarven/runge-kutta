@@ -8,9 +8,6 @@ import tiedostonluku
 
 G = 4*math.pi**2 # AU^3/(M_sun*a^2)
 
-# TODO: yksiköt:
-# AU
-# d
 
 def rungekutta(f, g, R0, V0, M, dt):
     koko = R0.shape
@@ -31,9 +28,8 @@ def rungekutta(f, g, R0, V0, M, dt):
                 k3y = g(x + 0.5*dt*k2x, y + 0.5*dt*k2y, m)
                 k4x = f(x + dt*k3x, y + dt*k3y, m)
                 k4y = g(x + dt*k3x, y + dt*k3y, m)
-
-                R1[i] += dt*(k1x + 2*k2x + 2*k3x + k4x)/6
-                V1[i] += dt*(k1y + 2*k2y + 2*k3y + k4y)/6
+                R1[i] = np.add(R1[i], dt*(k1x + 2*k2x + 2*k3x + k4x)/6)
+                V1[i] = np.add(V1[i], dt*(k1y + 2*k2y + 2*k3y + k4y)/6)
                 
     return (R1, V1)
     
@@ -46,11 +42,11 @@ def dr(r, v, m):
 #TODO kunnollinen dokumentaatio
 #TODO rakenne järkevämmäksi, mainissa liikaa
 """
-parametrit: tiedostonimi, t_max, dt
+parametrit: in-tiedostonimi, t_max, dt, nimi
 """
 def main():
-    if (len(sys.argv) != 4):
-        print "vituixmän" #TODO oikea virheilmo
+    if (len(sys.argv) != 5):
+        print "Anna parametreina alkuarvot sisältävä tekstitiedosto (kukin kappale rivillään, jokaisella rivillä paikat pilkulla erotettuna; nopeudet pilkulla erotettuna; massa), simulaation kesto, aika-askeleen pituus ja output-tiedostonimi. Yksiköinä AU, yr, M_☉"
     
     tiedostonimi = str(sys.argv[1])
     matriisit = tiedostonluku.lueXVM(tiedostonimi)
@@ -59,24 +55,29 @@ def main():
     t=0
     t_max = float(sys.argv[2])
     dt = float(sys.argv[3])
+    nimi = sys.argv[4]
     
-    out = np.ndarray((math.ceil((t_max-t)/dt)+1, 2), dtype=object)
+    outX = np.ndarray((math.floor((t_max-t)/dt)+1, 1), dtype=object)
+    outV = np.ndarray((math.floor((t_max-t)/dt)+1, 1), dtype=object)
     outRivi = 0
     
     while (t<t_max):
         tup = rungekutta(dr, dv, tup[0], tup[1], M, dt)
         X = tup[0]
         V = tup[1]
-        plt.plot(X[0][0], X[0][1], 'ro') #TODO plottaus ei kuulu tänne
-        plt.plot(X[1][0], X[1][1], 'bo')    
+        #plt.plot(X[0][0], X[0][1], 'ro') #TODO plottaus ei kuulu tänne
+        #plt.plot(X[1][0], X[1][1], 'bo')    
         t += dt
         
-        out[outRivi][0] = X
-        out[outRivi][1] = V
-        outRivi = outRivi + 1
+        outX[outRivi][0]= X
+        outV[outRivi][0] = V
+        outRivi = outRivi + 1        
         
-    plt.show()
-    #print out
+    #plt.show()
+    print outX        
+    tiedostonluku.kirjoitaMatr(outX, nimi+"-X.txt")
+    tiedostonluku.kirjoitaMatr(outV, nimi+"-V.txt")
+    
     
 if __name__ == '__main__':
     main()

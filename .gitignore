@@ -3,3 +3,4 @@ materiaalit/*
 *.fuse_hidden*
 testi.py
 *.pyc
+*.swp

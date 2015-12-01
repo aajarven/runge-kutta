@@ -4,3 +4,4 @@ materiaalit/*
 testi.py
 *.pyc
 *.swp
+output/*

@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import math
 import sys
 import tiedostonluku
+import tools
 
 G = 4*math.pi**2 # AU^3/(M_sun*a^2)
 
@@ -45,36 +46,28 @@ def dr(r, v, m):
 parametrit: in-tiedostonimi, t_max, dt, nimi
 """
 def main():
-    if (len(sys.argv) != 5):
-        print "Anna parametreina alkuarvot sisältävä tekstitiedosto (kukin kappale rivillään, jokaisella rivillä paikat pilkulla erotettuna; nopeudet pilkulla erotettuna; massa), simulaation kesto, aika-askeleen pituus ja output-tiedostonimi. Yksiköinä AU, yr, M_☉"
+    if (len(sys.argv) != 5 or "-h" in sys.argv or "-help" in sys.argv):
+        print "\nAnna parametreina alkuarvot sisältävä tekstitiedosto (kukin kappale rivillään, jokaisella rivillä paikat pilkulla erotettuna; nopeudet pilkulla erotettuna; massa), simulaation kesto, aika-askeleen pituus ja output-tiedostonimi. Yksiköinä AU, yr, M_☉.\n\nOhjelma tulostaa kappaleiden paikat riveittäin ajanhetkillä dt, 2dt, 3dt, ... tiedostoon output-tiedostonimi-X.txt ja vastaavat nopeudet tiedostoon output-tiedostonimi-V.txt. Output-tiedostoissa yksittäisen kappaleen koordinaatit on erotettu pilkulla ja kappaleet puolipisteellä.\n"
+        exit()
     
     tiedostonimi = str(sys.argv[1])
     matriisit = tiedostonluku.lueXVM(tiedostonimi)
     tup = (np.array(matriisit[0]), np.array(matriisit[1]))
     M = np.array(matriisit[2])
-    t=0
+    t=0.
     t_max = float(sys.argv[2])
     dt = float(sys.argv[3])
     nimi = sys.argv[4]
-    
-    outX = np.ndarray((math.floor((t_max-t)/dt)+1, 1), dtype=object)
-    outV = np.ndarray((math.floor((t_max-t)/dt)+1, 1), dtype=object)
+    outX = np.ndarray((int(math.ceil(t_max/dt)), 1), dtype=object)
+    outV = np.ndarray((int(math.ceil(t_max/dt)), 1), dtype=object)
     outRivi = 0
     
-    while (t<t_max):
+    for outRivi in range(outX.shape[0]):
         tup = rungekutta(dr, dv, tup[0], tup[1], M, dt)
-        X = tup[0]
-        V = tup[1]
-        #plt.plot(X[0][0], X[0][1], 'ro') #TODO plottaus ei kuulu tänne
-        #plt.plot(X[1][0], X[1][1], 'bo')    
+        outX[outRivi][0]= tup[0] # X
+        outV[outRivi][0] = tup[1] # V  
         t += dt
-        
-        outX[outRivi][0]= X
-        outV[outRivi][0] = V
-        outRivi = outRivi + 1        
-        
-    #plt.show()
-    print outX        
+              
     tiedostonluku.kirjoitaMatr(outX, nimi+"-X.txt")
     tiedostonluku.kirjoitaMatr(outV, nimi+"-V.txt")
     

@@ -17,11 +17,11 @@ def main():
     xSarake = int(sys.argv[2])
     ySarake = int(sys.argv[3])
     data = tiedostonluku.lueMatr(tiedosto)
-    varit = matplotlib.cm.rainbow(np.linspace(0, 1, data.shape[0]))
-    
-    for i in range(data.shape[0]):
-        x =  [row[xSarake] for row in data[i]]
-        y = [row[ySarake] for row in data[i]]
+    varit = matplotlib.cm.rainbow(np.linspace(0, 1, data.shape[1]))
+
+    for i in range(data.shape[1]):
+        x =  [row[xSarake] for row in data[:,i]]
+        y =  [row[ySarake] for row in data[:,i]]
         plt.scatter(x, y, c=varit[i], s=20)
     plt.show()
     

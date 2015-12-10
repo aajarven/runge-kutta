@@ -33,7 +33,7 @@ def rungekutta(f, g, R0, V0, M, dt):
                 #if (i==1):
                 #    print "loppu:\t",R1[i]
                 V1[i] = np.add(V1[i], dt*(k1y + 2*k2y + 2*k3y + k4y)/6)
-    #print "-------------------"            
+    print "-------------------"
     return (R1, V1)
     
 def dv(r, v, m):

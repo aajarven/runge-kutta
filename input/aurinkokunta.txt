@@ -1,0 +1,28 @@
+# X0 (AU)			V0 (AU/yr)			M (M_☉)
+#
+# Aurinko
+0,		0;		0,		0;		1
+#
+# Merkurius
+0.4352,		0;		0,		9.98;		1.66012e-7
+#
+# Venus
+0.7187,		0;		0,		7.38;		2.44781e-6	
+#
+# Maa
+1,		0;		0,		6.28;		3e-6
+#
+#
+# Mars
+#
+#
+# Jupiter
+#
+#
+# Saturnus
+#
+#
+# Uranus
+#
+#
+# Neptunus

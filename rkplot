@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python rk.py $1 $2 $3 $4
+echo "laskettu, aloitetaan plottaus"
+python plottool.py $4-X.txt 0 1

@@ -36,6 +36,7 @@ def lueXVM(tiedostonimi):
                 V.append([float(luku.strip()) for luku in matriisit[1].split(',')])
                 M.append(float(matriisit[2].strip()))
         rivinro = rivinro + 1
+
     return [X, V, M]
     
 """

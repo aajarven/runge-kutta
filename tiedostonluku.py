@@ -16,7 +16,8 @@ M= [1, 3e-6]
 import numpy as np
 
 """
-Lukee tiedostosta alkuarvomatriisit X0, V0 ja M. Ei huomioi #-merkillä alkavia rivejä
+Lukee tiedostosta alkuarvomatriisit X0, V0 ja M. Ei huomioi #-merkillä alkavia rivejä.
+Toiminnaltaan vastaava kuin lueMatr, mutta sallii kommenttirivit. Tästä syystä tehottomampi.
 """
 def lueXVM(tiedostonimi):
     f = open(tiedostonimi)
@@ -50,7 +51,7 @@ def kirjoitaMatr(matriisi, tiedostonimi):
                 tiedosto.write(str(matriisi[i][0][j][k]))
                 if (k != len(matriisi[0][0][0])-1):
                     tiedosto.write(",\t")
-            if (j != len(matriisi[0][0][0])-1):
+            if (j != len(matriisi[0][0])-1):
                 tiedosto.write(";\t")
         if(i != matriisi.shape[0]-1):
                 tiedosto.write("\n")
@@ -70,7 +71,7 @@ def lueMatr(tiedostonimi):
             try:
                 palautus[i][j] = [float(luku.strip()) for luku in matriisit[j].strip().split(',')]
             except ValueError:
-                print "Virhe luettaessa alkuarvotiedoston riviä ",i
+                print "Virhe luettaessa tiedoston riviä ",i
                 break
             palautus[i][j] = [float(luku.strip()) for luku in matriisit[j].split(',')]
                 

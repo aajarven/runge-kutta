@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 import sys
 import tiedostonluku
-import tools
 
 G = 4*math.pi**2 # AU^3/(M_sun*a^2)
 
@@ -15,10 +13,10 @@ def rungekutta(f, g, R0, V0, M, dt):
     R1 = np.copy(R0)
     V1 = np.copy(V0)
     for i in range(koko[0]):
+        y = V0[i]
         for j in range(koko[0]):
             if (i != j):              
                 x = R0[i]-R0[j]
-                y = V0[i]
                 m = M[j]
 
                 k1x = f(x, y, m) 
@@ -29,13 +27,17 @@ def rungekutta(f, g, R0, V0, M, dt):
                 k3y = g(x + 0.5*dt*k2x, y + 0.5*dt*k2y, m)
                 k4x = f(x + dt*k3x, y + dt*k3y, m)
                 k4y = g(x + dt*k3x, y + dt*k3y, m)
+                #if (i==1):
+                #    print "alku:\t",R1[i]
                 R1[i] = np.add(R1[i], dt*(k1x + 2*k2x + 2*k3x + k4x)/6)
+                #if (i==1):
+                #    print "loppu:\t",R1[i]
                 V1[i] = np.add(V1[i], dt*(k1y + 2*k2y + 2*k3y + k4y)/6)
-                
+    #print "-------------------"            
     return (R1, V1)
     
 def dv(r, v, m):
-    return -G*m*(r)/(len(r)**3)
+    return -G*m*(r)/(np.linalg.norm(r)**3)
     
 def dr(r, v, m):
     return v

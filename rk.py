@@ -9,39 +9,31 @@ G = 4*math.pi**2 # AU^3/(M_sun*a^2)
 
 
 def rungekutta(f, g, R0, V0, M, dt):
-    koko = R0.shape
-    R1 = np.copy(R0)
-    V1 = np.copy(V0)
-    for i in range(koko[0]):
-        y = V0[i]
-        for j in range(koko[0]):
-            if (i != j):   
-                #print "käsitellään ", i, ", ", j
-                x = R0[i]-R0[j]
-                m = M[j]
-
-                k1x = f(x, y, m) 
-                k1y = g(x, y, m) 
-                k2x = f(x + 0.5*dt*k1x, y + 0.5*dt*k1y, m)
-                k2y = g(x + 0.5*dt*k1x, y + 0.5*dt*k1y, m)
-                k3x = f(x + 0.5*dt*k2x, y + 0.5*dt*k2y, m)
-                k3y = g(x + 0.5*dt*k2x, y + 0.5*dt*k2y, m)
-                k4x = f(x + dt*k3x, y + dt*k3y, m)
-                k4y = g(x + dt*k3x, y + dt*k3y, m)
-                #if (i==1):
-                #    print "alku:\t",R1[i]
-                R1[i] = np.add(R1[i], dt*(k1x + 2*k2x + 2*k3x + k4x)/6)
-                #if (i==1):
-                #    print "loppu:\t",R1[i]
-                V1[i] = np.add(V1[i], dt*(k1y + 2*k2y + 2*k3y + k4y)/6)
-    #print "-------------------"
+    k1x = f(R0, V0, M) 
+    k1y = g(R0, V0, M) 
+    k2x = f(R0 + 0.5*dt*k1x, V0 + 0.5*dt*k1y, M)
+    k2y = g(R0 + 0.5*dt*k1x, V0 + 0.5*dt*k1y, M)
+    k3x = f(R0 + 0.5*dt*k2x, V0 + 0.5*dt*k2y, M)
+    k3y = g(R0 + 0.5*dt*k2x, V0 + 0.5*dt*k2y, M)
+    k4x = f(R0 + dt*k3x, V0 + dt*k3y, M)
+    k4y = g(R0 + dt*k3x, V0 + dt*k3y, M)
+    
+    R1 = np.add(R0, dt*(k1x + 2*k2x + 2*k3x + k4x)/6)
+    V1 = np.add(V0, dt*(k1y + 2*k2y + 2*k3y + k4y)/6)
     return (R1, V1)
     
-def dv(r, v, m):
-    return -G*m*(r)/(np.linalg.norm(r)**3)
+def dv(R, V, M):
+    dv = np.zeros(V.shape)
+    for i in range(R.shape[0]):
+        for j in range(R.shape[0]):
+            if (i != j):
+                r = R[i]-R[j]
+                m = M[j]
+                dv[i] += -G*m*(r)/(np.linalg.norm(r)**3)
+    return dv
     
-def dr(r, v, m):
-    return v
+def dr(R, V, M):
+    return V
 
 #TODO kunnollinen dokumentaatio
 #TODO rakenne järkevämmäksi, mainissa liikaa
@@ -70,7 +62,7 @@ def main():
         outX[outRivi][0]= tup[0] # X
         outV[outRivi][0] = tup[1] # V  
         t += dt
-              
+    
     tiedostonluku.kirjoitaMatr(outX, nimi+"-X.txt")
     tiedostonluku.kirjoitaMatr(outV, nimi+"-V.txt")
     

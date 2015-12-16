@@ -12,7 +12,9 @@ xSarake = 0
 ySarake = 1
 data = []
 varit = []
-    
+
+matplotlib.rcParams.update({'font.size': 22})
+
 #TODO argumenttitarkastus
 #TODO värit
 #TODO s argumenttina?
@@ -56,6 +58,9 @@ def centerplot():
             y[j] = koordinaatit[ySarake]
         plt.scatter(x, y, facecolor=varit[i], edgecolor=varit[i], s=1)
 
+    axes = plt.gca()
+    axes.set_xlim([-80, 80])
+    axes.set_ylim([-80, 80])
     plt.show()
      
     

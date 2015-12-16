@@ -1,5 +1,8 @@
 #!/bin/bash
-
-python rk.py $1 $2 $3 $4
-echo "laskettu, aloitetaan plottaus"
-python plottool.py $4-X.txt 0 1
+if [ "$#" -ne 5 ]; then
+	echo "anna argumentteina input-tiedosto, simuloitava aika, aika-askelen pituus, output-tiedostonimen juuri ja plottaustapa (s, simple, t tai tahti) joista ensimmäiset kaksi plottaavat kappaleet siinä koordinaatistossa jossa ne on annettu ja toinen keskittää plotin jokaisessa framessa listan ensimmäiseen kappaleeseen"
+else
+	python rk.py $1 $2 $3 $4
+	echo "laskettu, aloitetaan plottaus"
+	python plottool.py $4-X.txt 0 1 $5
+fi

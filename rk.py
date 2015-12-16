@@ -56,15 +56,54 @@ def main():
     outX = np.ndarray((int(math.ceil(t_max/dt)), 1), dtype=object)
     outV = np.ndarray((int(math.ceil(t_max/dt)), 1), dtype=object)
     outRivi = 0
+
+    mkp = np.zeros((int(math.ceil(t_max/dt)),3))
+    #print mkp
+    #print mkp.shape
+    kokonaismassa = np.sum(M)    
     
     for outRivi in range(outX.shape[0]):
         tup = rungekutta(dr, dv, tup[0], tup[1], M, dt)
         outX[outRivi][0]= tup[0] # X
         outV[outRivi][0] = tup[1] # V  
+        #print tup[0]
+        #print
+        #print tup[0]
+        for i in range(tup[0].shape[0]): # kukin kappale
+            for k in range(3):
+                #print tup[0][i][k]
+                #print M[i]
+                #print mkp[outRivi,k]
+                #print tup[0][i][k]
+                #print M[i]
+                #print kokonaismassa
+                mkp[outRivi,k] = mkp[outRivi,k] + tup[0][i][k]*M[i]/kokonaismassa
+                #print mkp[i,k]
+        
+#        for i in range(mkp.shape[1]):
+#            print "i: ",i
+#            #print tup[0][i]
+#            for k in range(3):
+#                print tup[0]
+#                mkp[outRivi,k] = mkp[outRivi,k] + tup[0][i][k]*M[i]/kokonaismassa
+#                #print mkp[i,k] 
         t += dt
     
+    #print mkp
+    #print mkp
     tiedostonluku.kirjoitaMatr(outX, nimi+"-X.txt")
     tiedostonluku.kirjoitaMatr(outV, nimi+"-V.txt")
+    
+    print mkp
+    tiedosto = open(nimi+"-X-mkp.txt", 'w')
+    for i in range(mkp.shape[0]): # rivi
+        for j in range(mkp.shape[1]): # sarake
+            tiedosto.write(str(mkp[i,j]))
+            if( j < 2 ):
+                tiedosto.write(",\t")
+        if(i != mkp.shape[0]-1):
+                tiedosto.write("\n")
+    tiedosto.close()
     
     
 if __name__ == '__main__':

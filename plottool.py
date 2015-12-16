@@ -31,7 +31,9 @@ def centerplot():
 #    print data.shape[0] # rivien määrä
 #    print data.shape[1] # kappaleiden määrä    
 
-    nollakoordinaatit = data[:,0]
+    nollakoordinaatit = tiedostonluku.lueMatr(tiedosto+"-mkp.txt")
+    #print nollakoordinaatit[1]
+    #print
 #    print data
 #    print
 #    print nollakoordinaatit
@@ -43,7 +45,13 @@ def centerplot():
     for i in range(data.shape[1]): # kappaleet
         x = np.zeros((data.shape[0], data.shape[1]))
         for j in range(data.shape[0]): # rivit
-            koordinaatit = np.subtract(data[j,i],nollakoordinaatit[j])
+            #print i,", ",j
+            #print nollakoordinaatit[j][0]
+            #print type(nollakoordinaatit[j][i])
+            #print
+            #print data[j,i]
+            #print type(data[j,i])
+            koordinaatit = np.subtract(data[j,i], nollakoordinaatit[j][0])
             x[j] = koordinaatit[xSarake]
             y[j] = koordinaatit[ySarake]
         plt.scatter(x, y, facecolor=varit[i], edgecolor=varit[i], s=1)
@@ -58,7 +66,7 @@ if __name__ == '__main__':
     tiedosto = argv[1]
     xSarake = int(argv[2])
     ySarake = int(argv[3])
-    data = tiedostonluku.lueMatr(tiedosto)
+    data = tiedostonluku.lueMatr(tiedosto+".txt")
     varit = matplotlib.cm.rainbow(np.linspace(0, 1, data.shape[1]))
     if (argv[4]=="s" or argv[3]=="simple"):
         simpleplot()

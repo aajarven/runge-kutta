@@ -4,5 +4,5 @@ if [ "$#" -ne 5 ]; then
 else
 	python rk.py $1 $2 $3 $4
 	echo "laskettu, aloitetaan plottaus"
-	python plottool.py $4-X.txt 0 1 $5
+	python plottool.py $4-X 0 1 $5
 fi

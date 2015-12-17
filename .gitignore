@@ -5,3 +5,8 @@ testi.py
 *.pyc
 *.swp
 output/*
+*.aux
+*.blg
+*.log
+*.out
+*.synctex.gz
